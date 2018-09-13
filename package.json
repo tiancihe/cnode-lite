@@ -1,0 +1,22 @@
+{
+  "name": "cnode-lite",
+  "version": "0.1.0",
+  "homepage": "https://tiancihe.github.io/cnode-lite",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
+    "gh-pages": "^1.2.0",
+    "vue-template-compiler": "^2.5.17"
+  }
+}
