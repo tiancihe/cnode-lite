@@ -22,7 +22,7 @@ export function collectTopic(accessToken, topicId) {
     return callApi(url, init);
 }
 
-export function undoCollectTopic(accessToken, topicId) {
+export function uncollectTopic(accessToken, topicId) {
     const url = `${baseUrl}/topic_collect/de_collect`;
     const init = initObj({
         accesstoken: accessToken,

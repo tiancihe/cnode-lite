@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-Vue.filter("getTabName", (tab) => {
+Vue.filter("getTabName", tab => {
     switch (tab) {
         case "top":
             return "置顶";
@@ -18,7 +18,7 @@ Vue.filter("getTabName", (tab) => {
     }
 });
 
-Vue.filter("getTimeAgo", (timeString) => {
+Vue.filter("getTimeAgo", timeString => {
     const now = new Date(Date.now());
     const date = new Date(timeString);
     if (now.getFullYear() === date.getFullYear()) {

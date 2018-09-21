@@ -8,7 +8,14 @@ html, body { overflow-x: hidden; }
 .progress-bar {
     margin: 0;
     padding: 0;
+    position: fixed;
+    top: 0;
     z-index: 100;
+}
+
+.alert {
+    position: fixed;
+    right: 0;
 }
 
 /* remove the default style of ul elements */
@@ -18,6 +25,11 @@ html, body { overflow-x: hidden; }
     padding: 0;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+}
+
 /* remove default style of a elements */
 a { text-decoration: none; }
 
@@ -25,7 +37,16 @@ a { text-decoration: none; }
 .markdown-text img,
 .reply-content img {
     display: block;
+    max-width: 100%;
     max-height: 200px;
+}
+
+/* make the code snippets in the markdown-text content responsive */
+.markdown-text code {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: pre;
 }
 
 @media screen and (min-width: 768px) {

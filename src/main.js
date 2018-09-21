@@ -9,11 +9,11 @@ import "@/css/index.css";
 
 Vue.config.productionTip = false;
 
-// new Vue({
-//     router,
-//     store,
-//     render: h => h(App)
-// }).$mount("#app");
+new Vue({
+    router,
+    store,
+    render: h => h(App)
+}).$mount("#app");
 
 // import Api from "@/api";
 

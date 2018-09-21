@@ -1,5 +1,5 @@
 <template>
-    <TopicDetail :topic="topic"/>
+    <TopicDetail v-if="showTopic" :topic="topic"/>
 </template>
 
 <script>
@@ -10,9 +10,15 @@ export default {
     name: "TopicDetailView",
     components: { TopicDetail },
     props: { id: String },
+    data() { return { showTopic: false }; },
     computed: mapState(["topic"]),
     created() {
-        this.$store.dispatch("getTopic", { id: this.id });
+        if(!this.topic) {
+            this.$store.dispatch("getTopic", { id: this.id })
+                .then(() => this.showTopic = true);
+        } else {
+            this.showTopic = true;
+        }
     }
 };
 </script>

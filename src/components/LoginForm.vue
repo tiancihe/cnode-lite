@@ -1,11 +1,16 @@
 <template>
-    <v-container class="ma-0 pa-0" fluid>
-        <v-layout class="mt-5 px-5" column>
+    <v-container>
+        <v-layout class="mt-5 px-5 text-xs-center" column>
             <v-flex>
                 <v-text-field
-                    v-model="accessToken"
                     label="Access Token"
+                    v-model="accessToken"
                     clearable></v-text-field>
+            </v-flex>
+            <v-flex>
+                <v-checkbox
+                    label="自动登录"
+                    v-model="autoLogin"></v-checkbox>
             </v-flex>
             <v-flex>
                 <v-btn
@@ -27,17 +32,22 @@ export default {
     data() {
         return {
             accessToken: "",
-            loading: false 
+            autoLogin: false,
+            loading: false
         };
     },
     methods: {
         validate() {
+            // set the auto login preference before validation starts, 
+            // because when the validation succeded, the user preferences will be stored
+            this.$store.commit("setAutoLogin", this.autoLogin);
             this.$store.dispatch("validateAccessToken", { accessToken: this.accessToken });
         }
     },
-    mounted() {
+    created() {
         // get the cached access token from the store, the store will get the access token from localStorage
         this.accessToken = this.$store.state.userAccessToken;
+        this.autoLogin = this.$store.state.autoLogin;
     }
 }
 </script>

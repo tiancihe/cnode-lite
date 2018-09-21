@@ -11,29 +11,35 @@ export default {
                 commit("setTopics", topics);
                 commit("setLoading", false);
             })
-            .catch(error => console.error(error));
+            .catch(error => console.log(error));
     },
     getTopic({ commit, state }, { id }) {
-        const { userAccessToken } = state;
+        const { loggedIn, userAccessToken } = state;
         commit("setLoading", true);
-        Api.topic.getTopic(id, userAccessToken)
-            .then(json => {
-                const topic = formatTopic(json.data);
-                commit("setTopic", topic);
-                commit("setLoading", false);
-            })
-            .catch(error => console.error(error));
+        return new Promise(resolve => {
+            Api.topic.getTopic(id, userAccessToken)
+                .then(json => {
+                    const topic = formatTopic(json.data);
+                    commit("setTopic", topic);
+                    commit("setLoading", false);
+                    resolve();
+                })
+                .catch(error => console.log(error));
+        });
     },
-    validateAccessToken({ commit, dispatch }, { accessToken }) {
+    validateAccessToken({ commit, dispatch, state }, { accessToken }) {
+        const { autoLogin } = state;
         Api.user.validateAccessToken(accessToken)
             .then(json => {
-                // when the validation succeded, store userId and accessToken, then get user information
-                const user = { id: json.id, accessToken };
-                localStorage.setItem("user", JSON.stringify(user));
-                commit("setUser", user);
-                dispatch("getUserInfo", { loginName: json.loginname });
+                if(json.success) {
+                    // when the validation succeded, store userId and accessToken, then get user information
+                    const user = { id: json.id, accessToken, autoLogin };
+                    localStorage.setItem("user", JSON.stringify(user));
+                    commit("setUser", user);
+                    dispatch("getUserInfo", { loginName: json.loginname });
+                }
             })
-            .catch(error => console.error(error));
+            .catch(error => console.log(error));
     },
     getUserInfo({ commit }, { loginName }) {
         commit("setLoading", true);
@@ -45,34 +51,46 @@ export default {
                     avatar: data.avatar_url,
                     githubUserName: data.githubUsername,
                     createAt: data.create_at,
-                    score: data.score,
-                    recentTopics: data.recent_topics.map(topic => topic.id),
-                    recentReplies: data.recent_replies.map(repliedTopic => repliedTopic.id)
+                    score: data.score
                 };
                 commit("setUserInfo", userInfo);
                 commit("setLoggedIn", true);
                 commit("setLoading", false);
             })
-            .catch(error => console.error(error));
-    },
-    getUnreadMessagesCount({ commit, state }) {
-        const { accessToken } = state;
-        Api.message.getUnreadMessagesCount(accessToken)
-            .then(json => console.log(json))
             .catch(error => console.log(error));
     },
-    getMessages() {
-        const { accessToken } = state;
-        Api.message.getMessages(accessToken)
+    collectTopic({ state }, { id }) {
+        const { userAccessToken } = state;
+        return new Promise(resolve => {
+            Api.topic.collectTopic(userAccessToken, id)
+                .then(json => resolve(json.success))
+                .catch(error => console.log(error));
+        });
+    },
+    uncollectTopic({ state }, { id }) {
+        const { userAccessToken } = state;
+        return new Promise((resolve, reject) => {
+            Api.topic.uncollectTopic(userAccessToken, id)
+                .then(json => resolve(json.success))
+                .catch(error => console.log(error));
+        });
+    },
+    getCollectedTopics({ commit, state }) {
+        const { userInfo } = state;
+        commit("setLoading", true);
+        Api.topic.getCollectedTopics(userInfo.name)
             .then(json => {
-                const { }
-            })
-            .catch();
+                const collectedTopics = formatTopics(json.data);
+                commit("setCollectedTopics", collectedTopics);
+                commit("setLoading", false);
+            });
     },
     thumbUpReply({ state }, { id }) {
         const { userAccessToken } = state;
-        Api.reply.thumbUpReply(id, userAccessToken)
-            .then(json => console.log(json))
-            .catch(error => console.error(error));
+        return new Promise(resolve => {
+            Api.reply.thumbUpReply(id, userAccessToken)
+                .then(json => resolve(json.action))
+                .catch(error => console.log(error));
+        });
     }
 };

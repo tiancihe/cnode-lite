@@ -10,8 +10,5 @@ export default new Router({
         if(to.name === "topic") {
             return { y: 0 };
         }
-        if(to.name === "home") {
-            return savedPosition;
-        }
     }
 });

@@ -13,7 +13,7 @@
             class="topic-tag d-inline-block"
             :class="{ highlight: topic.isTop || topic.isGood }"
         >
-            {{ topic.isTop ? "top" : topic.tab | getTabName }}
+            {{ topic.isTop ? "top" : (topic.isGood ? "good" : topic.tab) | getTabName }}
         </span>
         <div class="title mx-5 my-2">{{ topic.title }}</div>
         <div class="flex-justify-end">
