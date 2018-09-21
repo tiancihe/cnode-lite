@@ -1,10 +1,12 @@
 <template>
-    <v-container>
-        <v-layout>
-            <v-flex xs12 sm8 offset-sm2>
-                <TopicPreviewList v-if="topics" :topics="topics"/>
-            </v-flex>
-        </v-layout>
+    <v-container
+        class="px-0"
+        fluid
+        v-touch="{
+            left: () => $emit('swipe', 'left'),
+            right: () => $emit('swipe', 'right')
+        }">
+        <TopicPreviewList v-if="topics" :topics="topics"/>
         <v-layout>
             <v-flex xs12 justify-center>
                 <div class="pa-3">加载更多......</div>

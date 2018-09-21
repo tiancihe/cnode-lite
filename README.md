@@ -1,25 +1,22 @@
 # Cnode Lite
-A light weight client for [cnodejs.org](https://cnodejs.org/api) commnity,
-based on [vuejs](https://vuejs.org), [vue-router](https://router.vuejs.org) and [vuex](https://vuex.vuejs.org), use [vue-cli](https://cli.vuejs.org) as build tool.
+[cnodejs.org](https://cnodejs.org/api)社区的一个轻量型客户端，基于[vuejs](https://vuejs.org)，[vue-router](https://router.vuejs.org) and [vuex](https://vuex.vuejs.org)，使用[vue-cli](https://cli.vuejs.org)作为构建工具。
 
-This is a project i built for learning purpose, welcome to modify and enhance this project.
-
-### Install Dependencies
+### 安装依赖项
 ```
 npm install
 ```
 
-### Development Mode
+### 运行开发环境
 ```
 npm run serve
 ```
 
-### Production Mode
+### 生产模式
 ```
 npm run build
 ```
 
-### Deploy to Github Pages
+### 部署到Github Pages
 ```
 npm run deploy
 ```

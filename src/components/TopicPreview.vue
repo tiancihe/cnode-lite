@@ -1,9 +1,10 @@
 <template>
     <v-container
-        class="topic-preview mx-auto pa-2"
+        class="pa-2 cursor-pointer"
+        style="width: 100%;"
+        fluid
         v-ripple
-        @click="$emit('check-topic', topic.id)"
-    >
+        @click="$emit('check-topic', topic.id)">
         <v-avatar size="32" class="mr-2">
             <img :src="topic.author.avatar" alt="Avatar Image">
         </v-avatar>
@@ -11,8 +12,7 @@
         <span class="caption">{{ topic.createAt | getTimeAgo }}</span>
         <span
             class="topic-tag d-inline-block"
-            :class="{ highlight: topic.isTop || topic.isGood }"
-        >
+            :class="{ highlight: topic.isTop || topic.isGood }">
             {{ topic.isTop ? "top" : (topic.isGood ? "good" : topic.tab) | getTabName }}
         </span>
         <div class="title mx-5 my-2">{{ topic.title }}</div>
@@ -37,8 +37,7 @@ export default {
 </script>
 
 <style scoped>
-.topic-preview { cursor: pointer; }
-
+/* special style for the tag */
 .topic-tag {
     padding: 0.4rem;
     border-radius: 1rem;
@@ -50,15 +49,5 @@ export default {
 .topic-tag.highlight {
     background-color: #80bd01;
     color: white;
-}
-
-.flex {
-    display: flex;
-    align-items: center;
-}
-
-.flex-justify-end {
-    display: flex;
-    justify-content: flex-end;
 }
 </style>

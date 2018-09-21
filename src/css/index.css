@@ -18,8 +18,10 @@ html, body { overflow-x: hidden; }
     right: 0;
 }
 
-/* remove the default style of ul elements */
+/* remove the default style of ul elements, make them block level elements */
 .ul {
+    display: block;
+    width: 100%;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -29,6 +31,13 @@ html, body { overflow-x: hidden; }
     display: flex;
     align-items: center;
 }
+
+.flex-justify-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cursor-pointer { cursor: pointer; }
 
 /* remove default style of a elements */
 a { text-decoration: none; }

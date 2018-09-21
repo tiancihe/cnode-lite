@@ -8,7 +8,8 @@
         <v-toolbar
             app
             dense
-            scroll-off-screen>
+            scroll-off-screen
+            @click="backToTop">
             <v-toolbar-title>
                 <v-btn
                     color="transparent"
@@ -46,12 +47,8 @@
                 @switch-tab="switchTab"/>
         </v-toolbar>
 
-        <v-content
-            v-touch="{
-                left: () => swipe('Left'),
-                right: () => swipe('Right')
-            }">
-            <router-view/>
+        <v-content>
+            <router-view @swipe="swipe"/>
         </v-content>
 
         <v-bottom-nav
@@ -106,6 +103,9 @@ export default {
                     to: "/account"
                 }
             ];
+        },
+        enableSwipeGesture() {
+            return this.$route.name === "home";
         }
     },
     methods: {
@@ -115,12 +115,14 @@ export default {
             window.scrollTo({ top: 0, behavior: "smooth"});
         },
         swipe(direction) {
+            console.log("swipe");
+            
             // get the current index of the active tab in the tabs array
             const currentIndex = this.tabs.findIndex(tab => tab === this.activeTab);
             let index;
             // get the next index
-            if(direction === "Right") index = currentIndex + 1;
-            else if(direction === "Left") index = currentIndex - 1;
+            if(direction === "right") index = currentIndex + 1;
+            else if(direction === "left") index = currentIndex - 1;
             // if the swipe direction is neither left nor right, igore this swipe action
             else return;
             let nextIndex;
@@ -129,6 +131,13 @@ export default {
             else if(index < 0) nextIndex = index + this.tabs.length;
             else nextIndex = index;
             this.switchTab(this.tabs[nextIndex]);
+        },
+        backToTop() {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth"
+            });
         }
     },
     created() {

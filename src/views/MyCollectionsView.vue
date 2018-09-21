@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container fluid>
         <TopicPreviewList v-if="collectedTopics" :topics="collectedTopics"/>
     </v-container>
 </template>
