@@ -1,45 +1,78 @@
-import { fetchPosts, fetchPost } from "@/api";
-import { formatPosts, formatPost } from "@/util";
+import Api from "@/api";
+import { formatTopics, formatTopic } from "@/util";
 
 export default {
-  fetchPosts({ commit, state }) {
-    const { activeTab, totalPages, progress } = state;
-    // 设置progress状态，显示ProgressBar组件
-    commit("setProgress", { progress: { totalStages: 3, currentStage: 0 } });
-    // 第二个参数为totalPages是为了fetch最后一页的数据
-    fetchPosts(activeTab, totalPages)
-      .then(rawData => {
-        // 得到数据后设置progress阶段为1，然后commit setPosts
-        commit("setProgress", { progress: Object.assign({}, progress, { currentStage: 1 })})
-        return new Promise(resolve => {
-          const data = formatPosts(rawData);
-          commit("setPosts", { data });
-          resolve();
-        });
-      })
-      // 最后设置阶段为2
-      .then(() => {
-        commit("setProgress", { progress: Object.assign({}, progress, { currentStage: 2 })});
-      })
-      .catch(error => console.log(error));
-  },
-  fetchPost({ commit, state }, { id }) {
-    let { progress } = state;
-    commit("setProgress", { progress: { totalStages: 2, currentStage: 0 } });
-    fetchPost(id)
-      .then(rawData => {
-        commit("setProgress", { progress: Object.assign({}, progress, { currentStage: 1 })})
-        return new Promise(resolve => {
-          const data = formatPost(rawData);
-          commit("setPost", { data });
-          resolve();
-        });
-      })
-      .then(() => {
-        // 当store中的post状态确实包含数据后才显示该post
-        commit("setShowPost", { showPost: true });
-        commit("setProgress", { progress: Object.assign({}, progress, { currentStage: 2 })});
-      })
-      .catch(error => console.log(error));
-  }
+    getTopics({ commit, state }) {
+        const { activeTab, totalPages } = state;
+        commit("setLoading", true);
+        Api.topic.getTopics(activeTab, totalPages)
+            .then(json => {
+                const topics = formatTopics(json.data);
+                commit("setTopics", topics);
+                commit("setLoading", false);
+            })
+            .catch(error => console.error(error));
+    },
+    getTopic({ commit, state }, { id }) {
+        const { userAccessToken } = state;
+        commit("setLoading", true);
+        Api.topic.getTopic(id, userAccessToken)
+            .then(json => {
+                const topic = formatTopic(json.data);
+                commit("setTopic", topic);
+                commit("setLoading", false);
+            })
+            .catch(error => console.error(error));
+    },
+    validateAccessToken({ commit, dispatch }, { accessToken }) {
+        Api.user.validateAccessToken(accessToken)
+            .then(json => {
+                // when the validation succeded, store userId and accessToken, then get user information
+                const user = { id: json.id, accessToken };
+                localStorage.setItem("user", JSON.stringify(user));
+                commit("setUser", user);
+                dispatch("getUserInfo", { loginName: json.loginname });
+            })
+            .catch(error => console.error(error));
+    },
+    getUserInfo({ commit }, { loginName }) {
+        commit("setLoading", true);
+        Api.user.getUserInfo(loginName)
+            .then(json => {
+                const { data } = json;
+                const userInfo = {
+                    name: data.loginname,
+                    avatar: data.avatar_url,
+                    githubUserName: data.githubUsername,
+                    createAt: data.create_at,
+                    score: data.score,
+                    recentTopics: data.recent_topics.map(topic => topic.id),
+                    recentReplies: data.recent_replies.map(repliedTopic => repliedTopic.id)
+                };
+                commit("setUserInfo", userInfo);
+                commit("setLoggedIn", true);
+                commit("setLoading", false);
+            })
+            .catch(error => console.error(error));
+    },
+    getUnreadMessagesCount({ commit, state }) {
+        const { accessToken } = state;
+        Api.message.getUnreadMessagesCount(accessToken)
+            .then(json => console.log(json))
+            .catch(error => console.log(error));
+    },
+    getMessages() {
+        const { accessToken } = state;
+        Api.message.getMessages(accessToken)
+            .then(json => {
+                const { }
+            })
+            .catch();
+    },
+    thumbUpReply({ state }, { id }) {
+        const { userAccessToken } = state;
+        Api.reply.thumbUpReply(id, userAccessToken)
+            .then(json => console.log(json))
+            .catch(error => console.error(error));
+    }
 };

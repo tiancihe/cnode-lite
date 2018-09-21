@@ -1,29 +1,30 @@
-
 export default {
-  setProgress(state, { progress }) {
-    state.progress = progress;
-  },
-  setActiveTab(state, { tab }) {
-    state.activeTab = tab;
-    // 当切换tab后，重置totalPages
-    state.totalPages = 1;
-  },
-  setTotalPages(state, { totalPages }) {
-    state.totalPages = totalPages;
-  },
-  setPosts(state, { data }) {
-    if(state.totalPages !== 1) {
-      // 如果totalPages不为1，则表明当前加载的posts不止一页
-      // 此时应将得到的数据添加到posts数组的末尾
-      state.posts = state.posts.concat(data);
-    } else {
-      state.posts = data;
-    }
-  },
-  setPost(state, { data }) {
-    state.post = data;
-  },
-  setShowPost(state, { showPost }) {
-    state.showPost = showPost;
-  }
+    setLoading(state, payload) { state.loading = payload; },
+    setLoggedIn(state, payload) { state.loggedIn = payload; },
+    setUserId(state, payload) { state.userId = payload; },
+    setUserAccessToken(state, payload) { state.userAccessToken = payload; },
+    setUserInfo(state, payload) { state.userInfo = payload; },
+    setActiveTab(state, payload) {
+        state.activeTab = payload;
+        // when the tab is switched, the total pages should reset
+        state.totalPages = 1;
+    },
+    setTotalPages(state, payload) { state.totalPages = payload; },
+    setShowTopic(state, payload) { state.showTopic = payload; },
+    setSelectedTopic(state, payload) { state.selectedTopic = payload; },
+    setTopic(state, payload) {
+        state.topic = payload;
+        // then the topic information is received, show the topic
+        state.showTopic = true;
+    },
+    setTopics(state, payload) {
+        if(state.totalPages !== 1) {
+            state.topics = state.topics.concat(payload);
+        } else {
+            state.topics = payload;
+        }
+    },
+    setUnreadMessages(state, payload) { state.unreadMessages = payload; },
+    setReadMessages(state, payload) { state.readMessages = payload; },
+    setError(state, payload) { state.error = payload; }
 };

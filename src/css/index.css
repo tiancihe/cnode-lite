@@ -1,0 +1,36 @@
+/* hide horizontal overflow */
+html, body { overflow-x: hidden; }
+
+/* make the logo image responsive */
+#logo-image { height: 1.8rem; }
+
+/* make the progress bar sit on top of other content, set its margin and padding to 0 */
+.progress-bar {
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+/* remove the default style of ul elements */
+.ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* remove default style of a elements */
+a { text-decoration: none; }
+
+/* restrain image size in content retreived directly from the server and inserted to the DOM via v-html */
+.markdown-text img,
+.reply-content img {
+    display: block;
+    max-height: 200px;
+}
+
+@media screen and (min-width: 768px) {
+    .markdown-text img,
+    .reply-content img {
+        max-height: 300px;
+    }
+}
